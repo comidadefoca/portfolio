@@ -13,8 +13,14 @@
         html[lang="pt-BR"] .lang-en, html[lang="pt"] .lang-en { display: none !important; }
         html[lang="en"] .lang-pt { display: none !important; }
         /* Base Reveal Animation (Scroll triggered) */
-        .reveal { opacity: 0; transform: translateY(2rem); transition: all 1s cubic-bezier(0.16, 1, 0.3, 1); }
-        .reveal.active { opacity: 1; transform: translateY(0); }
+        .reveal {
+            opacity: 0;
+            transform: translate3d(0, 2rem, 0) scale(0.985);
+            transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), transform 0.95s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: opacity, transform;
+            backface-visibility: hidden;
+        }
+        .reveal.active { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
         /* Masked Text Reveal (For Hero Title) */
         .text-reveal-wrapper { overflow: hidden; display: inline-block; vertical-align: bottom; padding-bottom: 0.2em; margin-bottom: -0.2em; padding-right: 0.1em; margin-right: -0.1em; }
         .text-reveal-content {
@@ -33,6 +39,17 @@
         /* Nav Load */
         .nav-load { opacity: 0; transform: translateY(-10px); transition: all 0.8s ease-out; }
         .nav-load.loaded { opacity: 1; transform: translateY(0); }
+        
+        /* Premium Card Hover Optimization */
+        .card-hover-et {
+            transition: background-color 0.4s cubic-bezier(0.22, 1, 0.36, 1), 
+                        color 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+                        border-color 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+                        transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+            will-change: background-color, color, transform;
+            transform: translateZ(0); /* Force GPU */
+        }
+        
         iconify-icon { display: inline-flex; align-items: center; justify-content: center; vertical-align: middle; }
     </style>
     <script>
@@ -83,8 +100,6 @@
 </head>
 <body class="antialiased min-h-screen selection:bg-stone-800 selection:text-white bg-stone-900">
     <main class="sticky bottom-0 z-10 bg-[#EAEAE5] border-b border-stone-300">
-        <!-- Dim Overlay -->
-        <div id="main-overlay" class="absolute inset-0 bg-black opacity-0 pointer-events-none z-50 transition-opacity duration-75"></div>
         <!-- Main Container -->
         <div class="max-w-[1400px] mx-auto border-x border-stone-300 relative bg-[#EAEAE5] min-h-screen flex flex-col">
         
@@ -162,27 +177,27 @@
             <!-- Side Column -->
             <div class="col-span-1 md:col-span-3 grid grid-rows-3 h-full">
                 <!-- Latest Insight -->
-                <a href="https://substack.com" target="_blank" class="row-span-1 border-b border-stone-300 p-8 flex flex-col justify-center reveal delay-300 group hover:bg-stone-900 hover:text-white transition-colors cursor-pointer relative overflow-hidden">
-                    <span class="text-xs font-mono text-stone-400 group-hover:text-stone-400 uppercase tracking-widest mb-3 block transition-colors lang-en">Latest Writing</span>
-                    <span class="text-xs font-mono text-stone-400 group-hover:text-stone-400 uppercase tracking-widest mb-3 block transition-colors lang-pt">Último Artigo</span>
+                <a href="https://substack.com" target="_blank" class="row-span-1 border-b border-stone-300 p-8 flex flex-col justify-center reveal delay-300 group hover:bg-white card-hover-et cursor-pointer relative overflow-hidden">
+                    <span class="text-xs font-mono text-stone-400 group-hover:text-stone-500 uppercase tracking-widest mb-3 block transition-colors lang-en">Latest Writing</span>
+                    <span class="text-xs font-mono text-stone-400 group-hover:text-stone-500 uppercase tracking-widest mb-3 block transition-colors lang-pt">Último Artigo</span>
                     
-                    <h3 class="text-sm font-medium text-stone-900 group-hover:text-white transition-colors leading-relaxed line-clamp-2 lang-en reveal">
+                    <h3 class="text-sm font-medium text-stone-900 leading-relaxed line-clamp-2 lang-en reveal">
                         Deconstructing the perfect Apple-like scroll animation
                     </h3>
-                    <h3 class="text-sm font-medium text-stone-900 group-hover:text-white transition-colors leading-relaxed line-clamp-2 lang-pt reveal">
+                    <h3 class="text-sm font-medium text-stone-900 leading-relaxed line-clamp-2 lang-pt reveal">
                         Desconstruindo a animação de scroll perfeita estilo Apple
                     </h3>
                     
-                    <div class="mt-4 flex items-center gap-2 text-xs font-mono text-stone-500 group-hover:text-stone-300 transition-colors lang-en">
-                        Read Article <iconify-icon icon="solar:arrow-right-up-linear" class="text-sm"></iconify-icon>
+                    <div class="mt-4 flex items-center gap-2 text-xs font-mono text-stone-500 group-hover:text-stone-900 transition-colors lang-en">
+                        Read Article <iconify-icon icon="solar:arrow-right-up-linear" class="text-sm group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-500"></iconify-icon>
                     </div>
-                    <div class="mt-4 flex items-center gap-2 text-xs font-mono text-stone-500 group-hover:text-stone-300 transition-colors lang-pt">
-                        Ler Artigo <iconify-icon icon="solar:arrow-right-up-linear" class="text-sm"></iconify-icon>
+                    <div class="mt-4 flex items-center gap-2 text-xs font-mono text-stone-500 group-hover:text-stone-900 transition-colors lang-pt">
+                        Ler Artigo <iconify-icon icon="solar:arrow-right-up-linear" class="text-sm group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-500"></iconify-icon>
                     </div>
                 </a>
                 
                 <!-- Environment / Location -->
-                <div class="row-span-1 border-b border-stone-300 p-8 flex flex-col justify-center reveal delay-500 group hover:bg-white transition-colors">
+                <div class="row-span-1 border-b border-stone-300 p-8 flex flex-col justify-center reveal delay-500 group hover:bg-white card-hover-et">
                     <span class="text-xs font-mono text-stone-400 uppercase tracking-widest mb-4 block lang-en">Environment</span>
                     <span class="text-xs font-mono text-stone-400 uppercase tracking-widest mb-4 block lang-pt">Ambiente</span>
                     <div class="flex items-center gap-4">
@@ -198,11 +213,11 @@
                 </div>
 
                 <!-- Scroll Down Indicator -->
-                <div class="row-span-1 p-8 flex items-center justify-center reveal delay-700 group hover:bg-white transition-colors cursor-pointer" onclick="document.getElementById('work').scrollIntoView({behavior: 'smooth'})">
+                <div class="row-span-1 p-8 flex items-center justify-center reveal delay-700 group hover:bg-white card-hover-et cursor-pointer overflow-hidden" onclick="document.getElementById('work').scrollIntoView({behavior: 'smooth'})">
                     <div class="flex flex-col items-center gap-2 text-stone-400 group-hover:text-stone-900 transition-colors">
                         <span class="text-xs font-mono uppercase tracking-widest mb-2 lang-en">Explore More</span>
                         <span class="text-xs font-mono uppercase tracking-widest mb-2 lang-pt">Ver Mais</span>
-                        <iconify-icon class="text-3xl animate-bounce" icon="solar:arrow-down-linear"></iconify-icon>
+                        <iconify-icon class="text-3xl animate-[bounce_3s_infinite] group-hover:translate-y-2 transition-transform duration-500" icon="solar:arrow-down-linear"></iconify-icon>
                     </div>
                 </div>
             </div>
@@ -629,27 +644,6 @@
             }, observerOptions);
 
             document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-            // Footer Overlay Dimmer
-            const mainOverlay = document.getElementById('main-overlay');
-            const footerWrapper = document.querySelector('footer').parentElement;
-            
-            if(mainOverlay && footerWrapper) {
-                window.addEventListener('scroll', () => {
-                    const scrollY = window.scrollY;
-                    const maxScroll = document.body.scrollHeight - window.innerHeight;
-                    const footerHeight = footerWrapper.offsetHeight;
-                    
-                    const distanceToBottom = maxScroll - scrollY;
-                    
-                    if (distanceToBottom < footerHeight) {
-                        const progress = 1 - (Math.max(0, distanceToBottom) / footerHeight);
-                        mainOverlay.style.opacity = progress * 0.7;
-                    } else {
-                        mainOverlay.style.opacity = 0;
-                    }
-                }, { passive: true });
-            }
 
             // Environment Widget Logic
             function updateTime() {

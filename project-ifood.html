@@ -50,9 +50,6 @@
 </head>
 <body class="antialiased min-h-screen selection:bg-stone-800 selection:text-white bg-stone-900">
     <main class="sticky bottom-0 z-10 bg-[#EAEAE5] border-b border-stone-300">
-        <!-- Dim Overlay -->
-        <div id="main-overlay" class="absolute inset-0 bg-black opacity-0 pointer-events-none z-50 transition-opacity duration-75"></div>
-        
         <!-- Main Container -->
         <div class="max-w-[1400px] mx-auto border-x border-stone-300 relative bg-[#EAEAE5] min-h-screen flex flex-col">
             
@@ -412,23 +409,6 @@
             }, { threshold: 0.15 });
 
             document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-            // Footer Dimmer
-            const mainOverlay = document.getElementById('main-overlay');
-            const footerWrapper = document.querySelector('footer').parentElement;
-            if(mainOverlay && footerWrapper) {
-                window.addEventListener('scroll', () => {
-                    const scrollY = window.scrollY;
-                    const maxScroll = document.body.scrollHeight - window.innerHeight;
-                    const footerHeight = footerWrapper.offsetHeight;
-                    const distanceToBottom = maxScroll - scrollY;
-                    if (distanceToBottom < footerHeight) {
-                        mainOverlay.style.opacity = (1 - (Math.max(0, distanceToBottom) / footerHeight)) * 0.7;
-                    } else {
-                        mainOverlay.style.opacity = 0;
-                    }
-                }, { passive: true });
-            }
 
             // Wizard Scroll Logic
             const wizardSections = document.querySelectorAll('.wizard-section');
